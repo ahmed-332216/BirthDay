@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سجل التواريخ المضبوطة</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #222;
+            color: #fff;
+            padding: 40px;
+            text-align: center;
+        }
+        .box {
+            background: #333;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        ul { list-style: none; padding: 0; }
+        li {
+            background: #444;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 18px;
+            border-right: 4px solid #6c5ce7;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h2>التواريخ المسجلة 🤫</h2>
+    <ul id="list">جاري تحميل البيانات...</ul>
+</div>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
+<script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyB6iBq7snGQ2tSMz4jBkVLkoLtzpB8ZGfA",
+      authDomain: "ai3322.firebaseapp.com",
+      databaseURL: "https://ai3322-default-rtdb.firebaseio.com",
+      projectId: "ai3322",
+      storageBucket: "ai3322.firebasestorage.app",
+      messagingSenderId: "576197240868",
+      appId: "1:576197240868:web:8d36b98ad477d87a9f10b1",
+      measurementId: "G-2YGD3HP6HW"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    database.ref('birthdays').on('value', (snapshot) => {
+        const list = document.getElementById('list');
+        list.innerHTML = '';
+        const data = snapshot.val();
+        if(data) {
+            Object.keys(data).forEach(key => {
+                const item = data[key];
+                const li = document.createElement('li');
+                li.innerHTML = `تاريخ الميلاد: <b>${item.date}</b><br><small style="color:#aaa;">تاريخ التسجيل: ${new Date(item.timestamp).toLocaleString('ar-EG')}</small>`;
+                list.appendChild(li);
+            });
+        } else {
+            list.innerHTML = 'لا توجد تواريخ مسجلة بعد.';
+        }
+    });
+</script>
+</body>
+</html>
