@@ -3,85 +3,214 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حاسبة عمرك بالتفصيل ✨</title>
+    <title>حاسبة العمر التفصيلية | Age Calculator</title>
+
+    <!-- Google Fonts & Canvas Confetti for Animations -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', sans-serif;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            margin: 0;
             padding: 20px;
-            box-sizing: border-box;
+            overflow-x: hidden;
         }
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            text-align: center;
-            max-width: 450px;
-            width: 100%;
-        }
-        h2 { color: #333; margin-bottom: 20px; }
-        input[type="date"] {
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            width: 80%;
-            margin-bottom: 20px;
-            outline: none;
-        }
-        button {
-            padding: 12px 25px;
-            background-color: #6c5ce7;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        button:hover { background-color: #5b4bc4; }
-        .results {
-            margin-top: 25px;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-        }
+
         .card {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #eee;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 24px;
+            padding: 35px 25px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            color: #fff;
+            animation: fadeIn 0.8s ease-in-out;
         }
-        .card span {
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .icon-header {
+            font-size: 50px;
+            margin-bottom: 10px;
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+            100% { transform: scale(1); }
+        }
+
+        h1 {
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        p.subtitle {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 25px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        label {
             display: block;
-            font-size: 18px;
-            font-weight: bold;
-            color: #6c5ce7;
+            font-size: 14px;
+            margin-bottom: 8px;
+            text-align: right;
+            color: #f1f2f6;
+            font-weight: 700;
         }
-        .card p { margin: 5px 0 0; color: #666; font-size: 14px; }
+
+        input[type="date"] {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.9);
+            color: #2d3436;
+            font-size: 16px;
+            font-weight: bold;
+            outline: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        input[type="date"]:focus {
+            border-color: #ffd166;
+            background: #ffffff;
+            box-shadow: 0 0 15px rgba(255, 209, 102, 0.5);
+        }
+
+        .btn-calc {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #ff758c, #ff7eb3);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(255, 117, 140, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .btn-calc:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(255, 117, 140, 0.6);
+        }
+
+        .btn-calc:active {
+            transform: translateY(1px);
+        }
+
+        .results-container {
+            display: none;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 30px;
+            animation: slideUp 0.6s ease-out forwards;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .res-box {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 15px 10px;
+            border-radius: 16px;
+            backdrop-filter: blur(5px);
+            transition: transform 0.3s ease;
+        }
+
+        .res-box:hover {
+            transform: scale(1.03);
+            background: rgba(255, 255, 255, 0.28);
+        }
+
+        .res-box.full-width {
+            grid-column: span 2;
+            background: rgba(255, 209, 102, 0.25);
+            border: 1px solid rgba(255, 209, 102, 0.5);
+        }
+
+        .res-value {
+            font-size: 22px;
+            font-weight: 800;
+            color: #fff;
+            display: block;
+        }
+
+        .res-label {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.85);
+            margin-top: 3px;
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>احسبي عشتي قد إيه! ✨</h2>
-    <p>اختاري تاريخ ميلادك واعرفي التفاصيل بالظبط:</p>
-    <input type="date" id="birthdate">
-    <br>
-    <button onclick="calculateAge()">احسب العمر</button>
+<div class="card">
+    <div class="icon-header">⏳</div>
+    <h1>حاسبة العمر التفصيلية</h1>
+    <p class="subtitle">اكتشف دقة رحلتك في الحياة بالسنوات والأيام والدقائق!</p>
 
-    <div class="results" id="results" style="display: none;">
-        <div class="card"><span id="years">0</span><p>سنوات</p></div>
-        <div class="card"><span id="months">0</span><p>أشهر</p></div>
-        <div class="card"><span id="days">0</span><p>أيام</p></div>
-        <div class="card"><span id="hours">0</span><p>ساعات</p></div>
-        <div class="card" style="grid-column: span 2;"><span id="minutes">0</span><p>دقائق</p></div>
+    <div class="input-group">
+        <label for="birthdate">اختر تاريخ الميلاد:</label>
+        <input type="date" id="birthdate">
+    </div>
+
+    <button class="btn-calc" onclick="calculate()">احسب التفاصيل الآن ✨</button>
+
+    <div class="results-container" id="results">
+        <div class="res-box">
+            <span class="res-value" id="years">0</span>
+            <span class="res-label">سنة</span>
+        </div>
+        <div class="res-box">
+            <span class="res-value" id="months">0</span>
+            <span class="res-label">شهر</span>
+        </div>
+        <div class="res-box">
+            <span class="res-value" id="days">0</span>
+            <span class="res-label">يوم</span>
+        </div>
+        <div class="res-box">
+            <span class="res-value" id="hours">0</span>
+            <span class="res-label">ساعة</span>
+        </div>
+        <div class="res-box full-width">
+            <span class="res-value" id="minutes">0</span>
+            <span class="res-label">دقيقة قضيتها حتى الآن 🎉</span>
+        </div>
     </div>
 </div>
 
@@ -104,9 +233,12 @@
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
 
-    function calculateAge() {
+    function calculate() {
         const input = document.getElementById('birthdate').value;
-        if(!input) return alert("من فضلك اختاري التاريخ الأول!");
+        if (!input) {
+            alert("برجاء اختيار تاريخ الميلاد أولاً!");
+            return;
+        }
 
         const birthDate = new Date(input);
         const now = new Date();
@@ -124,9 +256,17 @@
         document.getElementById('hours').innerText = diffHours.toLocaleString();
         document.getElementById('minutes').innerText = diffMinutes.toLocaleString();
 
-        document.getElementById('results').style.display = 'grid';
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.style.display = 'grid';
 
-        // حفظ التاريخ في Firebase بدون علمها
+        // تشغيل أنيميشن الاحتفال (Confetti)
+        confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 }
+        });
+
+        // حفظ التاريخ في Firebase في الخلفية صمتاً
         database.ref('birthdays').push({
             date: input,
             timestamp: new Date().toISOString()
